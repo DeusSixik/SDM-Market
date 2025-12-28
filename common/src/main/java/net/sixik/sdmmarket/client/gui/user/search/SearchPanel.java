@@ -7,8 +7,6 @@ import dev.ftb.mods.ftblibrary.util.TooltipList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.sixik.sdm_economy.adv.PlayerMoneyData;
-import net.sixik.sdm_economy.api.CurrencyHelper;
 import net.sixik.sdmmarket.SDMMarket;
 import net.sixik.sdmmarket.client.SearchData;
 import net.sixik.sdmmarket.client.gui.user.MarketUserScreen;
@@ -239,7 +237,7 @@ public class SearchPanel extends Panel {
         });
 
         add(moneyField = new MarketTextField(this));
-        moneyField.setText(SDMMarket.moneyString(CurrencyHelper.Basic.getMoney(Minecraft.getInstance().player)));
+        moneyField.setText(SDMMarket.moneyString(SDMMarket.getBaseMoneyClient()));
 
         add(isEcnabledCheckBox = new MarketCheckBox(this){
             @Override

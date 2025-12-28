@@ -10,7 +10,7 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
     modApi files("../libs/sdm_ui_lib-1.20.1-1.8.2.jar")
-    modApi files("../libs/sdm_economy-1.20.1-1.6.0.jar")
+    modApi ("curse.maven:sdm-economy-1102542:6689080")
     modApi ("dev.ftb.mods:ftb-library:${rootProject.ftb_library_version}") { transitive false }
 }
 

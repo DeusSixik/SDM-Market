@@ -3,12 +3,13 @@ package net.sixik.sdmmarket.common.market.user;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.sixik.sdm_economy.api.CurrencyHelper;
+import net.sixik.sdmeconomy.api.EconomyAPI;
 import net.sixik.sdmmarket.SDMMarket;
 import net.sixik.sdmmarket.api.MarketAPI;
 import net.sixik.sdmmarket.client.SearchData;
 import net.sixik.sdmmarket.common.data.MarketDataManager;
 import net.sixik.sdmmarket.common.data.MarketPlayerData;
+import net.sixik.sdmmarket.common.economy.SDMCoin;
 import net.sixik.sdmmarket.common.market.basketEntry.BasketItemEntry;
 import net.sixik.sdmmarket.common.market.basketEntry.BasketMoneyEntry;
 import net.sixik.sdmmarket.common.market.offer.OfferCreateData;
@@ -125,7 +126,9 @@ public class MarketUserEntry implements INBTSerialize {
         MarketPlayerData.PlayerData data = MarketDataManager.getPlayerData(player);
         MarketPlayerData.PlayerData ownerData = MarketDataManager.getPlayerData(player.server, ownerID);
 
-        if(CurrencyHelper.Basic.getMoney(player) < price) return false;
+        final var curData = EconomyAPI.getPlayerCurrencyServerData();
+
+        if(curData.getBalance(player, SDMCoin.getId()).value < price) return false;
 
         if(ownerData == null || data == null) return false;
 
@@ -134,7 +137,8 @@ public class MarketUserEntry implements INBTSerialize {
         ownerData.countOffers = Math.min(ownerData.countOffers + 1, MarketDataManager.GLOBAL_CONFIG_SERVER.maxOffersForPlayer);
         ownerData.playerOffers.removeIf(s -> Objects.equals(s, entryID));
 
-        CurrencyHelper.Basic.addMoney(player, -price);
+
+        curData.addCurrencyValue(player, SDMCoin.getId(), -price);
         BasketItemEntry itemEntry = new BasketItemEntry(itemStack, count);
         data.playerBasket.basketMoneyEntries.add(itemEntry);
 

@@ -4,8 +4,11 @@ import com.mojang.logging.LogUtils;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.utils.Env;
 import dev.architectury.utils.EnvExecutor;
+import net.sixik.sdmeconomy.api.EconomyAPI;
+import net.sixik.sdmeconomy.currencies.CustomCurrencies;
 import net.sixik.sdmmarket.common.MarketEvents;
 import net.sixik.sdmmarket.common.commands.MarketCommands;
+import net.sixik.sdmmarket.common.economy.SDMCoin;
 import net.sixik.sdmmarket.common.network.MarketNetwork;
 import net.sixik.sdmmarket.common.register.ItemsRegister;
 import org.slf4j.Logger;
@@ -16,6 +19,8 @@ public class SDMMarket
 	public static Logger LOGGER = LogUtils.getLogger();
 
 	public static void init() {
+        CustomCurrencies.CURRENCIES.put(SDMCoin.getId(), SDMCoin::new);
+
 		MarketNetwork.init();
 		ItemsRegister.ITEMS.register();
 		MarketEvents.init();
@@ -26,9 +31,9 @@ public class SDMMarket
 
 	}
 
-	public static String moneyString(long money) {
-		return String.format("◎ %,d", money);
-	}
+    public static String moneyString(double money) {
+        return String.format("◎ %,.2f", money);
+    }
 
 	public static String moneyString(String money) {
 		return "◎ " + money;
@@ -54,4 +59,13 @@ public class SDMMarket
 		LOGGER.error(str);
 
 	}
+
+    public static double getBaseMoneyClient() {
+        double countMoney = 0;
+        final var pCur = EconomyAPI.getPlayerCurrencyClientData().getCurrency(SDMCoin.getId());
+        if(pCur.isPresent()) {
+            countMoney = pCur.get().balance;
+        }
+        return countMoney;
+    }
 }

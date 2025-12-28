@@ -2,7 +2,9 @@ package net.sixik.sdmmarket.common.market.basketEntry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
-import net.sixik.sdm_economy.api.CurrencyHelper;
+import net.sixik.sdmeconomy.api.EconomyAPI;
+import net.sixik.sdmeconomy.utils.ErrorCodes;
+import net.sixik.sdmmarket.common.economy.SDMCoin;
 
 public class BasketMoneyEntry extends AbstractBasketEntry{
 
@@ -15,7 +17,14 @@ public class BasketMoneyEntry extends AbstractBasketEntry{
 
     @Override
     public void givePlayer(Player player) {
-        CurrencyHelper.Basic.addMoney(player, moneyCount);
+        if(player.isLocalPlayer()) {
+            final var data = EconomyAPI.getPlayerCurrencyClientData().getCurrency(SDMCoin.getId());
+            if(data.isEmpty()) return;
+            final var _data = data.get();
+            _data.balance = _data.balance + moneyCount;
+        } else {
+            EconomyAPI.getPlayerCurrencyServerData().addCurrencyValue(player, SDMCoin.getId(), moneyCount);
+        }
     }
 
     @Override
