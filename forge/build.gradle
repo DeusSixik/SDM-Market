@@ -20,32 +20,6 @@ configurations {
     developmentForge.extendsFrom common
 }
 
-repositories {
-    mavenLocal()
-    maven {
-        url "https://maven.architectury.dev/"
-    }
-
-    maven {
-        url "https://maven.saps.dev/releases"
-        content {
-            includeGroup "dev.latvian.mods"
-            includeGroup "dev.ftb.mods"
-        }
-    }
-
-    maven {
-        url "https://maven.saps.dev/snapshots"
-        content {
-            includeGroup "dev.latvian.mods"
-            includeGroup "dev.ftb.mods"
-        }
-    }
-    maven {
-        url "https://cursemaven.com"
-    }
-}
-
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
     // Remove the next line if you don't want to depend on the API

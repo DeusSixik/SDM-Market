@@ -7,32 +7,6 @@ architectury {
     fabric()
 }
 
-repositories {
-    mavenLocal()
-    maven {
-        url "https://maven.architectury.dev/"
-    }
-
-    maven {
-        url "https://maven.saps.dev/releases"
-        content {
-            includeGroup "dev.latvian.mods"
-            includeGroup "dev.ftb.mods"
-        }
-    }
-
-    maven {
-        url "https://maven.saps.dev/snapshots"
-        content {
-            includeGroup "dev.latvian.mods"
-            includeGroup "dev.ftb.mods"
-        }
-    }
-    maven {
-        url "https://cursemaven.com"
-    }
-}
-
 configurations {
     common
     shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.

@@ -1,3 +1,5 @@
+.gradle/
+.idea/
 forge/build/
 forge/.gradle/
 fabric/run/
